@@ -1,11 +1,12 @@
 
 const stampit = require('stampit');
 var assert = require('assert');
+var define = require('define');
 
 
 
 
-
+//test case passes
 describe('The Module Pattern', function () {
 
     var myModule = (function () {
@@ -21,6 +22,7 @@ describe('The Module Pattern', function () {
     });
 });
 
+//Gives error at .state() line 65
 describe('Use Stampit to define factory', function () {
 
     (function (exports) {
@@ -94,7 +96,58 @@ describe('Use Stampit to define factory', function () {
                 '.save() method should save post.');
         });
     });
+});
 
+//Gives error at the moment line 110 because of jQueryStatic $
+describe('Pass application object as export', function () {
+
+    var app = {};
+    (function (exports) {
+        (function (exports) {
+            var api = {
+                moduleExists: function it() {
+                    return true;
+                }
+            };
+            $.extend(exports, api);
+        }((typeof exports === 'undefined') ?
+            window : exports));
+    }(app));
+    it('Pass app as exports.', function () {
+        assert.ok(app.moduleExists(),
+            'The module exists.');
+    });
+
+});
+
+describe('Anonymous module', function () {
+
+    define(['ch04/amd1', 'ch04/amd2'], //need to find/create modules to put inside here
+        function myModule(amd1, amd2) {
+            var testResults = {
+                test1: amd1.test(),
+                test2: amd2.test()
+            },
+                // Define a public API for your module:
+                api = {
+                    testResults: function () {
+                        return testResults;
+                    }
+                };
+            return api;
+        });
+    //To kick it off, call require()
+    require(['ch04-amd'], function (amd) { //refer back to line 125
+        var results = amd.testResults();
+        test('AMD with Require.js', function () {
+            equal(results.test1, true,
+                'First dependency loaded correctly.');
+            equal(results.test2, true,
+                'Second dependency loaded correctly.');
+        });
+    });
 
 
 });
+
+
