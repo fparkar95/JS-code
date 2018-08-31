@@ -147,7 +147,25 @@ describe('Chapter4 Functions', function () {
                     'Second dependency loaded correctly.');
             });
         });
-
-
     });
+
+    describe('Flatiron', function () {
+
+        var flatiron = require('flatiron'),
+        app = flatiron.app;
+       app.use(flatiron.plugins.http, {
+        // HTTP options
+       });
+       //
+       // app.router is now available. app[HTTP-VERB] is also available
+       // as a shortcut for creating routes
+       //
+       app.router.get('/version', function () {
+        this.res.writeHead(200, { 'Content-Type': 'text/plain' })
+        this.res.end('flatiron ' + flatiron.version);
+       });
+       app.start(8080);
+       
+    });
+
 });
