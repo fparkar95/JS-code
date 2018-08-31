@@ -12,7 +12,8 @@ describe('Chapter3 Functions', function () {
         });
     });
 
-
+    //A prototype is an object intended to model other objects after
+    //Object.create() polyfill is a shortcut that creates a new constructor function
     describe('Delegate Prototypes', function () {
         if (!Object.create) {
             Object.create = function (o) {
@@ -38,7 +39,7 @@ describe('Chapter3 Functions', function () {
 
             state: false
         },
-            switch1 = Object.create(switchProto),
+            switch1 = Object.create(switchProto), //set as the delegate prototype for the newly created object
             switch2 = Object.create(switchProto);
 
         it('Object.create', function () {
@@ -81,11 +82,11 @@ describe('Chapter3 Functions', function () {
             switch2 = Object.create(switchProto);
 
         it('Prototype mutations', function () {
-            switch2.meta.name = 'Breaker switch';
+            switch2.meta.name = 'Breaker switch'; // change a subproperty of meta, it mutates the object attached to the prototype
             assert.equal(switch1.meta.name, 'Breaker switch', 'Object and array mutations are shared.');
             assert.equal(switch2.meta.name, 'Breaker switch', 'Object and array mutations are shared.');
 
-            switch2.meta = { name: 'Power switch' };
+            switch2.meta = { name: 'Power switch' }; // replace the whole meta object with a new object, it overrides the property for that instance only
             assert.equal(switch1.meta.name, 'Breaker switch', 'Property replacement is instance-specific.');
             assert.equal(switch2.meta.name, 'Power switch', 'Property replacement is instance-specific.');
         });
@@ -118,8 +119,8 @@ describe('Chapter3 Functions', function () {
             state: false
         },
 
-            switch1 = _.extend({}, switchProto),
-            switch2 = _.extend({}, switchProto);
+            switch1 = _.extend({}, switchProto), // pass the new empty object as the destination object
+            switch2 = _.extend({}, switchProto); //followed by the prototype as the source object
 
         it('Prototype clones.', function () {
             switch1.isOn.isShared = true;
@@ -265,4 +266,31 @@ describe('Chapter3 Functions', function () {
             assert.equal(myCar.brake(5).mph, 5, '.brake(5) should subtract 5mph.');
         });
     });
+
+    describe('Factory method', function () {
+
+        function factory() {
+            var highlander = {
+                name: 'MacLeod'
+            };
+
+            return {
+                get: function get() {
+                    return highlander;
+                }
+            };
+        }
+        it('Singleton', function () {
+            var singleton = factory();
+            hero = singleton.get(),
+                hero2 = singleton.get();
+
+            hero.sword = 'Katana';
+            // Since hero2.sword exists, you know it's the same
+            // object.
+            assert.ok(hero2.sword, 'There can be only one.');
+        });
+
+    });
+
 });
