@@ -1,10 +1,8 @@
 // "use strict"
-
 var _ = require('underscore');
 var assert = require('assert');
 var stampit = require('stampit');
 //var define = require('define');
-
 
 //new code to declare jQueryStatic after npm update
 var jsdom = require("jsdom");
@@ -31,8 +29,8 @@ describe('Chapter4 Functions', function () {
             assert.ok(myModule.hello(), 'Module works.');
         });
     });
-    /*
-        //Gives error at .state() line 65
+    
+        //Gives error at .state() line 76
         describe('Use Stampit to define factory', function () {
     
             (function (exports) {
@@ -62,10 +60,11 @@ describe('Chapter4 Functions', function () {
                                 $.cookie('storage', JSON.stringify(storage));
                             }
                         }),
-                    post = stampit().methods({
+                    post = stampit()
+                    .methods({
                         save: function save() {
                             storage[this.id] = this.data;   // Need to discuss Stampit chains with Brent for this function
-                            storage.save();
+                            storage.save();                 //standardized types of metadata have changed in new update
                             return this;
                         },
                         set: function set(name, value) {
@@ -73,17 +72,17 @@ describe('Chapter4 Functions', function () {
                             return this;
                         }
                     })
-                        .state({
+                    .deepProps({
                             data: {
                                 message: '',
                                 published: false
                             },
                             id: undefined
-                        })
-                        .enclose(function init() {
+                    })
+                    .compose(function init() {
                             this.id = generateUUID();
                             return this;
-                        }),
+                    }),
                     api = post;
                 storage = (supportsLocalStorage)
                     ? localStorageProvider()
@@ -107,8 +106,8 @@ describe('Chapter4 Functions', function () {
                 });
             });
         });
-    */
-    //Gives error at the moment line 110 because of jQueryStatic $
+    
+
     describe('Pass application object as export', function () {
 
         var app = {};

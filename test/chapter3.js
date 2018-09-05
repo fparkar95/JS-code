@@ -67,7 +67,7 @@ describe('Chapter3 Functions', function () {
                 return this.state;
             },
 
-            toggle: function toggle() {
+            toggle: function toggle() { //pointer to a function
                 this.state = !this.state;
                 return this;
             },
