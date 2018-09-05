@@ -9,10 +9,13 @@ var firstBall = {
     }
 };
 
+//factory method to create other objects
+//Abstract the details of object creation from object use
 function FirstBallFactory(){
     return Object.create(firstBall);
 }
 
+//creating another object using factory method
 var f_basketball = FirstBallFactory();
 f_basketball.dribble();
 
